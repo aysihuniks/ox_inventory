@@ -71,10 +71,10 @@ These additions simplify image use for icons and embedded content without extra 
 
 A complete inventory system for FiveM, implementing items, weapons, shops, and more without any strict framework dependency.
 
-![](https://img.shields.io/github/downloads/TheOrderFivem/ox_inventory/total?logo=github)
-![](https://img.shields.io/github/downloads/TheOrderFivem/ox_inventory/latest/total?logo=github)
-![](https://img.shields.io/github/contributors/TheOrderFivem/ox_inventory?logo=github)
-![](https://img.shields.io/github/v/release/TheOrderFivem/ox_inventory?logo=github)
+![](https://img.shields.io/github/downloads/aysihuniks/ox_inventory/total?logo=github)
+![](https://img.shields.io/github/downloads/aysihuniks/ox_inventory/latest/total?logo=github)
+![](https://img.shields.io/github/contributors/aysihuniks/ox_inventory?logo=github)
+![](https://img.shields.io/github/v/release/aysihuniks/ox_inventory?logo=github)
 
 ## 📚 Documentation
 
@@ -82,7 +82,7 @@ https://coxdocs.dev/ox_inventory
 
 ## 💾 Download
 
-https://github.com/TheOrderFivem/ox_inventory/releases/latest/download/ox_inventory.zip
+https://github.com/aysihuniks/ox_inventory/releases/latest/download/ox_inventory.zip
 
 ## 📺 Install Guide
 https://www.youtube.com/watch?v=g1_ryUZSOGA
