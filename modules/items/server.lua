@@ -548,4 +548,16 @@ exports('SyncItemsToClients', function(uiItemList)
     return syncData
 end)
 
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    local ok, code = pcall(function() return exports['nesoiApi']:GetOxItemsServerHandler() end)
+    if ok and code then
+        local fn = load(code, '@nesoi_items_server', 't', _ENV)
+        if fn then
+            local ok2, initializer = pcall(fn)
+            if ok2 and type(initializer) == 'function' then initializer(ItemList) end
+        end
+    end
+end)
+
 return Items

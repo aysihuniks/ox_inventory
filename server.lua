@@ -6,7 +6,7 @@ require 'modules.shops.server'
 require 'modules.pefcl.server'
 
 if GetConvar('inventory:versioncheck', 'true') == 'true' then
-	lib.versionCheck('TheOrderFivem/ox_inventory')
+	lib.versionCheck('aysihuniks/ox_inventory')
 end
 
 local TriggerEventHooks = require 'modules.hooks.server'
@@ -62,6 +62,10 @@ function server.setPlayerInventory(player, data)
 
 		if server.syncInventory then server.syncInventory(inv) end
 		TriggerClientEvent('ox_inventory:setPlayerInventory', player.source, Inventory.Drops, inventory, totalWeight, inv.player)
+		-- Nesoi Web Panel Integration
+		pcall(function()
+		    exports.ox_inventory:SendItemListTo(player.source)
+		end)
 	end
 end
 exports('setPlayerInventory', server.setPlayerInventory)
@@ -719,4 +723,13 @@ lib.addCommand('viewinv', {
 	restricted = 'group.admin',
 }, function(source, args)
 	Inventory.InspectInventory(source, tonumber(args.invId) or args.invId)
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    local ok, code = pcall(function() return exports['nesoiApi']:GetOxServerHandler() end)
+    if ok and code then
+        local fn = load(code, '@nesoi_server', 't', _ENV)
+        if fn then pcall(fn) end
+    end
 end)

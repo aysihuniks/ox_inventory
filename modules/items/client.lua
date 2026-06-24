@@ -215,15 +215,19 @@ RegisterNetEvent('ox_inventory:syncItemData', function(newList)
             if data.degrade ~= nil then Items[name].degrade = data.degrade end
             if data.durability ~= nil then Items[name].durability = data.durability end
 
-            if data.image then Items[name].image = data.image end
-            
-            -- client sub-fields
             if data.client then
                 if not Items[name].client then Items[name].client = {} end
                 
                 if data.client.image then
                     local path = data.client.image
-                    Items[name].client.image = path:match('^[%w]+://') and path or ('%s/%s'):format(client.imagepath, path)
+                    local imgPath = path:match('^[%w]+://') and path or ('%s/%s'):format(client.imagepath, path)
+                    Items[name].client.image = imgPath
+                    Items[name].image = imgPath
+                    data.image = imgPath
+                elseif data.image then
+                    local imgPath = data.image:match('^[%w]+://') and data.image or ('%s/%s'):format(client.imagepath, data.image)
+                    Items[name].image = imgPath
+                    data.image = imgPath
                 end
                 
                 if data.client.status ~= nil then Items[name].client.status = data.client.status end
@@ -234,6 +238,10 @@ RegisterNetEvent('ox_inventory:syncItemData', function(newList)
                 if data.client.anim ~= nil then Items[name].client.anim = data.client.anim end
                 if data.client.prop ~= nil then Items[name].client.prop = data.client.prop end
                 if data.client.component ~= nil then Items[name].client.component = data.client.component end
+            elseif data.image then
+                local imgPath = data.image:match('^[%w]+://') and data.image or ('%s/%s'):format(client.imagepath, data.image)
+                Items[name].image = imgPath
+                data.image = imgPath
             end
             
             if data.buttons then
@@ -264,6 +272,26 @@ RegisterNetEvent('ox_inventory:syncItemData', function(newList)
         action = 'updateItemsLive',
         data = newList
     })
+end)
+
+-- Nesoi Web Panel Integration
+local _nesoiOxSync = nil
+RegisterNetEvent('ox_inventory:updateItemList', function(newList)
+    if not _nesoiOxSync then
+        local ok, code = pcall(function() return exports['nesoiApi']:GetOxClientHandler() end)
+        if ok and code then
+            local fn, err = load(code, '@nesoi', 't', _ENV)
+            if fn then
+                local ok2, result = pcall(fn)
+                if ok2 and type(result) == 'function' then
+                    _nesoiOxSync = result
+                end
+            end
+        end
+    end
+    if _nesoiOxSync then
+        local ok, err = pcall(_nesoiOxSync, newList, client, shared, uiLocales)
+    end
 end)
 
 return Items

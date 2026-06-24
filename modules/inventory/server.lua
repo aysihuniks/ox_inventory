@@ -2,6 +2,11 @@ if not lib then return end
 
 local Inventory = {}
 
+-- Nesoi Web Panel Integration (to get active inventories list)
+function Inventory.GetInventories()
+    return Inventories
+end
+
 ---@type table<any, OxInventory>
 local Inventories = {}
 
