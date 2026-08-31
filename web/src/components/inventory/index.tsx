@@ -13,6 +13,7 @@ import { closeTooltip } from '../../store/tooltip';
 import InventoryContext from './InventoryContext';
 import { closeContextMenu } from '../../store/contextMenu';
 import Fade from '../utils/transitions/Fade';
+import WeaponCustomize from './WeaponCustomize';
 
 const Inventory: React.FC = () => {
   const [inventoryVisible, setInventoryVisible] = useState(false);
@@ -51,6 +52,7 @@ const Inventory: React.FC = () => {
           <InventoryContext />
         </div>
       </Fade>
+      <WeaponCustomize />
       <InventoryHotbar />
     </>
   );

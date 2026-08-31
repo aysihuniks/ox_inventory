@@ -5,6 +5,7 @@ require 'modules.interface.client'
 
 local Utils = require 'modules.utils.client'
 local Weapon = require 'modules.weapon.client'
+local WeaponCustomize = require 'modules.weapon.customize'
 local currentWeapon
 
 exports('getCurrentWeapon', function()
@@ -49,6 +50,10 @@ local function canOpenInventory()
     end
 
     if IsPauseMenuActive() then return end
+
+    if WeaponCustomize.isOpen() then
+        return shared.info('cannot open inventory', '(weapon customize open)')
+    end
 
     if invBusy or invOpen == nil or (currentWeapon?.timer or 0) > 0 then
         return shared.info('cannot open inventory', '(is busy)')
@@ -1766,6 +1771,10 @@ RegisterNUICallback('useButton', function(data, cb)
 end)
 
 RegisterNUICallback('exit', function(_, cb)
+	if WeaponCustomize.isOpen() then
+		WeaponCustomize.close()
+	end
+
 	client.closeInventory()
 	cb(1)
 end)

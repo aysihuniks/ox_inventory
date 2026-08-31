@@ -635,3 +635,440 @@ button:active {
   transform: translateY(200px);
   transition: all 200ms;
 }
+
+// --- Weapon Customize (ported from MrNewb fork) ---
+.weapon-customize {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+  color: $textColor;
+  font-family: $mainFont;
+
+  // Don't inherit global button:active translate — it breaks absolute slot positioning.
+  button:active {
+    transform: none;
+  }
+}
+
+.wc-info {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 2;
+  bottom: 4.5vh;
+  left: 3vw;
+  width: 34vw;
+  max-width: 28rem;
+  max-height: min(72vh, 36rem);
+  overflow-y: auto;
+  padding: 0.85rem 0.95rem;
+  background-color: $mainColor;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  h1 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .divider {
+    margin: 0.35rem 0 0.45rem;
+  }
+}
+
+.wc-meta {
+  margin: 0.15rem 0;
+  color: $textColor;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.wc-stat-bar {
+  margin: 0.2rem 0 0.45rem;
+
+  .durability-bar {
+    height: 0.8vh;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px inset rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+}
+
+.wc-attachments {
+  margin-top: 0.35rem;
+}
+
+.wc-attachments-title {
+  margin-bottom: 0.35rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.wc-attachments-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+}
+
+.wc-attachments-slot {
+  color: rgba($textColor, 0.55);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.wc-attachments-value {
+  color: $textColor;
+  font-size: 0.72rem;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wc-attachments-empty {
+  margin: 0;
+  color: rgba($textColor, 0.55);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.wc-back {
+  margin-top: 0.65rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: $secondaryColor;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: $mainFont;
+  cursor: pointer;
+  transition: 200ms;
+
+  &:hover {
+    background-color: $secondaryColorDark;
+  }
+}
+
+.wc-stage {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.wc-help-button {
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.wc-help-overlay {
+  z-index: 200 !important;
+}
+
+.wc-help-dialog {
+  z-index: 201;
+}
+
+.wc-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0.25rem 0 0.35rem;
+}
+
+.wc-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.wc-slot {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  min-width: 6.4rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: $mainColor;
+  color: $textColor;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  cursor: pointer;
+  transition: background-color 200ms, border-color 200ms;
+
+  &:active {
+    transform: translate(-50%, -50%);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    background: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+  }
+
+  &.wc-slot-left::after {
+    right: 100%;
+    top: 50%;
+    width: 2.4rem;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  &.wc-slot-right::after {
+    left: 100%;
+    top: 50%;
+    width: 2.4rem;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  &.wc-slot-up::after {
+    left: 50%;
+    bottom: 100%;
+    width: 1px;
+    height: 2rem;
+    transform: translateX(-50%);
+  }
+
+  &.wc-slot-down::after {
+    left: 50%;
+    top: 100%;
+    width: 1px;
+    height: 2rem;
+    transform: translateX(-50%);
+  }
+
+  &:hover,
+  &.active {
+    background-color: $secondaryColorHighlight;
+    border-color: rgba($textColor, 0.35);
+  }
+
+  &.filled .wc-slot-label {
+    color: #fff;
+  }
+}
+
+.wc-slot-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $textColor;
+}
+
+.wc-slot-attached {
+  font-size: 0.62rem;
+  color: rgba($textColor, 0.6);
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wc-actions {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 3;
+  width: 15.5rem;
+  max-height: 18rem;
+  padding: 0.65rem;
+  background-color: $mainColor;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.wc-actions-left {
+  transform: translate(0.9rem, -50%);
+}
+
+.wc-actions-right {
+  transform: translate(-100%, -50%);
+  margin-left: -0.9rem;
+}
+
+.wc-actions-up {
+  transform: translate(-50%, 0.9rem);
+}
+
+.wc-actions-down {
+  transform: translate(-50%, -100%);
+  margin-top: -0.9rem;
+}
+
+.wc-actions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: rgba($textColor, 0.7);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wc-actions-close {
+  border: none;
+  background: transparent;
+  color: rgba($textColor, 0.7);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.15rem;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.wc-actions-equipped {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  background-color: $secondaryColor;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.wc-actions-equipped-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.wc-actions-label {
+  color: rgba($textColor, 0.55);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.wc-actions-value {
+  color: #fff;
+  font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wc-actions-hint {
+  margin: 0;
+  color: rgba($textColor, 0.55);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+}
+
+.wc-remove {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: $secondaryColor;
+  color: #e03131;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: $mainFont;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  transition: 200ms;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: $secondaryColorDark;
+  }
+}
+
+.wc-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+  max-height: 11rem;
+}
+
+.wc-actions-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.45rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: $secondaryColor;
+  color: $textColor;
+  cursor: pointer;
+  transition: 200ms;
+  text-align: left;
+
+  img {
+    width: 1.7rem;
+    height: 1.7rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  span {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background-color: $secondaryColorDark;
+  }
+}
+
+.wc-empty {
+  margin: 0.2rem 0;
+  color: rgba($textColor, 0.55);
+  font-size: 0.72rem;
+}
